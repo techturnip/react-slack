@@ -16,23 +16,75 @@ class Register extends React.Component {
     username: "",
     email: "",
     password: "",
-    passwordConfirmation: ""
+    passwordConfirmation: "",
+    errors: []
   };
 
+  // form validation
+  isFormValid = () => {
+    let errors = [];
+    let error;
+
+    if (this.isFormEmpty(this.state)) {
+      // set error message
+      error = { message: "Fill in all fields" };
+      // set error state
+      this.setState({ errors: errors.concat(error) });
+
+      // return false
+      return false;
+    } else if (!this.isPasswordValid(this.state)) {
+      // set error message
+      error = { message: "Password is invalid" };
+      // set error state
+      this.setState({ errors: errors.concat(error) });
+
+      // return false
+      return false;
+    } else {
+      return true;
+    }
+  };
+
+  // check for empty form
+  isFormEmpty = ({ username, email, password, passwordConfirmation }) => {
+    return (
+      !username.length ||
+      !email.length ||
+      !password.length ||
+      !passwordConfirmation.length
+    );
+  };
+
+  // check for valid password
+  isPasswordValid = ({ password, passwordConfirmation }) => {
+    if (password.length < 6 || passwordConfirmation.length < 6) {
+      return false;
+    } else if (password !== passwordConfirmation) {
+      return false;
+    } else {
+      return true;
+    }
+  };
+
+  // change handler
   handleChange = event => {
     this.setState({ [event.target.name]: event.target.value });
   };
 
+  // submit handler
   handleSubmit = event => {
-    event.preventDefault();
+    if (this.isFormValid()) {
+      event.preventDefault();
 
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(this.state.email, this.state.password)
-      .then(createdUser => {
-        console.log(createdUser);
-      })
-      .catch(err => console.error(err));
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(this.state.email, this.state.password)
+        .then(createdUser => {
+          console.log(createdUser);
+        })
+        .catch(err => console.error(err));
+    }
   };
 
   render() {
