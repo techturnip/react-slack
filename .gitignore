@@ -51,3 +51,6 @@ Sessionx.vim
 .vim
 #
 # # End of https://www.gitignore.io/api/vim
+
+# VS Code
+.history/
