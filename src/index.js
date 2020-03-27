@@ -11,6 +11,7 @@ import ReactDOM from 'react-dom';
 import App from './components/App';
 import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
+import Spinner from './Spinner';
 //=====================================================|
 // MISC IMPORTS ---------------------------------------|
 //-----------------------------------------------------|
@@ -49,6 +50,7 @@ const store = createStore(rootReducer, composeWithDevTools());
 //=====================================================|
 class Root extends React.Component {
   componentDidMount() {
+    console.log(this.props.isLoading);
     // setup listener for Auth to push user from Auth flow
     // to the application root if logged in
     firebase.auth().onAuthStateChanged(user => {
@@ -60,7 +62,9 @@ class Root extends React.Component {
   }
 
   render() {
-    return (
+    return this.props.isLoading ? (
+      <Spinner />
+    ) : (
       <Switch>
         <Route exact path="/" component={App} />
         <Route path="/login" component={Login} />
@@ -70,11 +74,18 @@ class Root extends React.Component {
   }
 }
 //=====================================================|
+// REDUX MAP STATE FROM PROPS =========================|
+//=====================================================|
+const mapStateFromProps = state => ({
+  isLoading: state.user.isLoading
+});
+//=====================================================|
 // SETUP ROUTER HOC ===================================|
 //=====================================================|
 // Wrap Root with withRouter HOC for access to history.push
 // inside of the component lifecycle method componentDidMount()
-const RootWithAuth = withRouter(connect(null, { setUser })(Root));
+// and wrap with connect for redux state functionality
+const RootWithAuth = withRouter(connect(mapStateFromProps, { setUser })(Root));
 //=====================================================|
 // RENDER APP =========================================|
 //=====================================================|
