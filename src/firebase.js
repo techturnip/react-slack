@@ -6,13 +6,13 @@ import 'firebase/storage';
 // Your web app's Firebase configuration
 var firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_KEY,
-  authDomain: 'react-slack-app-170ce.firebaseapp.com',
-  databaseURL: 'https://react-slack-app-170ce.firebaseio.com',
-  projectId: 'react-slack-app-170ce',
-  storageBucket: 'react-slack-app-170ce.appspot.com',
-  messagingSenderId: '173197745598',
-  appId: '1:173197745598:web:4918fde56186bb761aadef',
-  measurementId: 'G-RERL35P84T'
+  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+  databaseURL: process.env.REACT_APP_DB_URL,
+  projectId: process.env.REACT_APP_PROJ_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MSG_SND_ID,
+  appId: process.env.REACT_APP_APP_ID,
+  measurementId: process.env.REACT_APP_MEASUREMENT_ID
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
