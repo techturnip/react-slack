@@ -5,6 +5,10 @@
 //-----------------------------------------------------|
 import React from 'react';
 //=====================================================|
+// FIREBASE IMPORTS -----------------------------------|
+//-----------------------------------------------------|
+import firebase from '../../firebase';
+//=====================================================|
 // COMPONENTS IMPORTS ---------------------------------|
 //-----------------------------------------------------|
 import { Grid, Header, Icon, Dropdown } from 'semantic-ui-react';
@@ -12,6 +16,9 @@ import { Grid, Header, Icon, Dropdown } from 'semantic-ui-react';
 // USER PANEL COMPONENT ===============================|
 //=====================================================|
 class UserPanel extends React.Component {
+  //---------------------------------------------------|
+  // SET DROPDOWN OPTIONS -----------------------------|
+  //---------------------------------------------------|
   dropdownOptions = () => [
     {
       key: 'user',
@@ -28,9 +35,19 @@ class UserPanel extends React.Component {
     },
     {
       key: 'signout',
-      text: <span>Sign Out</span>
+      text: <span onClick={this.handleSignout}>Sign Out</span>
     }
   ];
+  //---------------------------------------------------|
+  // EVENT HANDLERS -----------------------------------|
+  //---------------------------------------------------|
+  handleSignout = () => {
+    firebase
+      .auth()
+      .signOut()
+      .then(() => console.log('signed out!'));
+  };
+  //---------------------------------------------------|
 
   render() {
     return (
