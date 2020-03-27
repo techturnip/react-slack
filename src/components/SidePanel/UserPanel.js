@@ -7,28 +7,29 @@ import React from 'react';
 //=====================================================|
 // COMPONENTS IMPORTS ---------------------------------|
 //-----------------------------------------------------|
-import { Menu } from 'semantic-ui-react';
-import UserPanel from './UserPanel';
+import { Grid, Header, Icon } from 'semantic-ui-react';
 //=====================================================|
-// SIDE PANEL COMPONENT ===============================|
+// USER PANEL COMPONENT ===============================|
 //=====================================================|
-class SidePanel extends React.Component {
+class UserPanel extends React.Component {
   render() {
     return (
-      <Menu
-        size="large"
-        inverted
-        fixed="left"
-        vertical
-        style={{ background: '#4c3c4c', fontSize: '1.2rem' }}
-      >
-        <UserPanel />
-      </Menu>
+      <Grid style={{ background: '#4c3c4c' }}>
+        <Grid.Column>
+          <Grid.Row style={{ padding: '1.2em', margin: 0 }}>
+            {/* App Header */}
+            <Header inverted floated="left" as="h2">
+              <Icon name="code" />
+              <Header.Content>TechChat</Header.Content>
+            </Header>
+          </Grid.Row>
+        </Grid.Column>
+      </Grid>
     );
   }
 }
 //=====================================================|
 // EXPORT COMPONENT ===================================|
 //=====================================================|
-export default SidePanel;
+export default UserPanel;
 //=====================================================|
