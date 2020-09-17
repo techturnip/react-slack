@@ -3,15 +3,15 @@
 //=====================================================|
 // REACT IMPORTS --------------------------------------|
 //-----------------------------------------------------|
-import React from 'react';
+import React from "react";
 //=====================================================|
 // FIREBASE IMPORTS -----------------------------------|
 //-----------------------------------------------------|
-import firebase from '../../firebase';
+import firebase from "../../firebase";
 //=====================================================|
 // COMPONENTS IMPORTS ---------------------------------|
 //-----------------------------------------------------|
-import { Grid, Header, Icon, Dropdown, Image } from 'semantic-ui-react';
+import { Grid, Header, Icon, Dropdown, Image } from "semantic-ui-react";
 //=====================================================|
 // USER PANEL COMPONENT ===============================|
 //=====================================================|
@@ -20,29 +20,29 @@ class UserPanel extends React.Component {
   // COMPONENT STATE ----------------------------------|
   //---------------------------------------------------|
   state = {
-    user: this.props.currentUser
+    user: this.props.currentUser,
   };
   //---------------------------------------------------|
   // SET DROPDOWN OPTIONS -----------------------------|
   //---------------------------------------------------|
   dropdownOptions = () => [
     {
-      key: 'user',
+      key: "user",
       text: (
         <span>
           Signed in as <strong>{this.state.user.displayName}</strong>
         </span>
       ),
-      disabled: true
+      disabled: true,
     },
     {
-      key: 'avatar',
-      text: <span>Change Avater</span>
+      key: "avatar",
+      text: <span>Change Avater</span>,
     },
     {
-      key: 'signout',
-      text: <span onClick={this.handleSignout}>Sign Out</span>
-    }
+      key: "signout",
+      text: <span onClick={this.handleSignout}>Sign Out</span>,
+    },
   ];
   //---------------------------------------------------|
   // EVENT HANDLERS -----------------------------------|
@@ -51,16 +51,16 @@ class UserPanel extends React.Component {
     firebase
       .auth()
       .signOut()
-      .then(() => console.log('signed out!'));
+      .then(() => console.log("signed out!"));
   };
   //---------------------------------------------------|
   render() {
     const { user } = this.state;
 
     return (
-      <Grid style={{ background: '#4c3c4c' }}>
+      <Grid style={{ background: "#4c3c4c" }}>
         <Grid.Column>
-          <Grid.Row style={{ padding: '1.2em', margin: 0 }}>
+          <Grid.Row style={{ padding: "1.2em", margin: 0 }}>
             {/* App Header */}
             <Header inverted floated="left" as="h2">
               <Icon name="code" />
@@ -68,7 +68,7 @@ class UserPanel extends React.Component {
             </Header>
 
             {/* User Dropdown */}
-            <Header style={{ padding: '0.25em' }} as="h4" inverted>
+            <Header style={{ padding: "0.25em" }} as="h4" inverted>
               <Dropdown
                 trigger={
                   <span>
