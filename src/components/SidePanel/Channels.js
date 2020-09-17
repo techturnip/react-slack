@@ -1,10 +1,29 @@
+//=====================================================|
+// IMPORTS ============================================|
+//=====================================================|
+// REACT IMPORTS --------------------------------------|
+//-----------------------------------------------------|
 import React from "react";
+//=====================================================|
+// FIREBASE IMPORTS -----------------------------------|
+//-----------------------------------------------------|
 import firebase from "../../firebase";
+//=====================================================|
+// REDUX IMPORTS --------------------------------------|
+//-----------------------------------------------------|
 import { connect } from "react-redux";
 import { setCurrentChannel } from "../../actions";
+//=====================================================|
+// COMPONENTS IMPORTS ---------------------------------|
+//-----------------------------------------------------|
 import { Menu, Icon, Modal, Form, Input, Button } from "semantic-ui-react";
-
+//=====================================================|
+// CHANNEL COMPONENT ==================================|
+//=====================================================|
 class Channels extends React.Component {
+  //---------------------------------------------------|
+  // COMPONENT STATE ----------------------------------|
+  //---------------------------------------------------|
   state = {
     activeChannel: "",
     user: this.props.currentUser,
@@ -15,23 +34,36 @@ class Channels extends React.Component {
     modal: false,
     firstLoad: true,
   };
-
+  //---------------------------------------------------|
+  // COMPONENT METHODS --------------------------------|
+  //---------------------------------------------------|
   openModal = () => this.setState({ modal: true });
   closeModal = () => this.setState({ modal: false });
-
+  //---------------------------------------------------|
+  // HANDLER METHODS ----------------------------------|
+  //---------------------------------------------------|
   handleChange = (event) => {
     this.setState({ [event.target.name]: event.target.value });
   };
+  //---------------------------------------------------|
+  handleSubmit = (event) => {
+    event.preventDefault();
+
+    if (this.isFormValid(this.state)) {
+      this.addChannel();
+    }
+  };
+  //---------------------------------------------------|
 
   changeChannel = (channel) => {
     this.setActiveChannel(channel);
     this.props.setCurrentChannel(channel);
   };
-
+  //---------------------------------------------------|
   setActiveChannel = (channel) => {
     this.setState({ activeChannel: channel.id });
   };
-
+  //---------------------------------------------------|
   displayChannels = (channels) =>
     channels.length > 0 &&
     channels.map((channel) => (
@@ -45,22 +77,9 @@ class Channels extends React.Component {
         # {channel.name}
       </Menu.Item>
     ));
-
+  //---------------------------------------------------|
   isFormValid = ({ channelName, channelDetails }) =>
     channelName && channelDetails;
-
-  componentDidMount() {
-    this.addListeners();
-  }
-
-  addListeners = () => {
-    let loadedChannels = [];
-    this.state.channelsRef.on("child_added", (snap) => {
-      loadedChannels.push(snap.val());
-      this.setState({ channels: loadedChannels }, () => this.setFirstChannel());
-    });
-  };
-
   setFirstChannel = () => {
     const firstChannel = this.state.channels[0];
 
@@ -71,7 +90,7 @@ class Channels extends React.Component {
 
     this.setState({ firstLoad: false });
   };
-
+  //---------------------------------------------------|
   addChannel = () => {
     const { channelsRef, channelName, channelDetails, user } = this.state;
 
@@ -99,15 +118,31 @@ class Channels extends React.Component {
         console.error(err);
       });
   };
-
-  handleSubmit = (event) => {
-    event.preventDefault();
-
-    if (this.isFormValid(this.state)) {
-      this.addChannel();
-    }
+  //---------------------------------------------------|
+  // LIFECYCLE METHODS --------------------------------|
+  //---------------------------------------------------|
+  componentDidMount() {
+    this.addListeners();
+  }
+  //---------------------------------------------------|
+  componentWillUnmount() {
+    this.removeListeners();
+  }
+  //---------------------------------------------------|
+  // LISTENER METHODS ---------------------------------|
+  //---------------------------------------------------|
+  addListeners = () => {
+    let loadedChannels = [];
+    this.state.channelsRef.on("child_added", (snap) => {
+      loadedChannels.push(snap.val());
+      this.setState({ channels: loadedChannels }, () => this.setFirstChannel());
+    });
   };
-
+  //---------------------------------------------------|
+  removeListeners = () => {
+    this.state.channelsRef.off();
+  };
+  //---------------------------------------------------|
   render() {
     const { channels, modal } = this.state;
 
