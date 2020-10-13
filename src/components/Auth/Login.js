@@ -1,4 +1,5 @@
-import React from 'react';
+import React from "react";
+import firebase from "../../firebase";
 import {
   Grid,
   Form,
@@ -7,61 +8,28 @@ import {
   Header,
   Message,
   Icon
-} from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
-import firebase from '../../firebase';
+} from "semantic-ui-react";
+import { Link } from "react-router-dom";
 
 class Login extends React.Component {
-  //-----------------------------------------------------|
-  // STATE ----------------------------------------------|
-  //=====================================================|
   state = {
-    email: '', // set by email form value
-    password: '', // set by password form value
-    errors: [], // set by error handling fn's
-    loading: false // handles submit btn loading state
+    email: "",
+    password: "",
+    errors: [],
+    loading: false
   };
-  //-----------------------------------------------------|
-  // FORM VALIDATION ------------------------------------|
-  //=====================================================|
-  isFormValid = ({ email, password }) => email && password;
-  //-----------------------------------------------------|
-  // ERROR HANDLERS -------------------------------------|
-  //=====================================================|
-  // Display Errors
-  // Desc: fn maps the errors array, displaying <p> tags that
-  // contain the error messages.
+
   displayErrors = errors =>
     errors.map((error, i) => <p key={i}>{error.message}</p>);
-  //-----------------------------------------------------|
-  // Apply Input Error Class
-  // Desc: fn conditionally applies the error class to the
-  // corresponding input field in the event an error is thrown
-  handleInputError = (errors, inputName) => {
-    return errors.some(error => error.message.toLowerCase().includes(inputName))
-      ? 'error'
-      : '';
-  };
-  //-----------------------------------------------------|
-  // EVENT HANDLERS -------------------------------------|
-  //=====================================================|
-  // Change Handler
+
   handleChange = event => {
     this.setState({ [event.target.name]: event.target.value });
   };
-  //-----------------------------------------------------|
-  // Submit Handler
+
   handleSubmit = event => {
-    // prevent default submit btn behavior
     event.preventDefault();
-
-    // check if the form is valid
     if (this.isFormValid(this.state)) {
-      // if valid:
-      // empty errors arr and set loading state to true
       this.setState({ errors: [], loading: true });
-
-      // send the form data to firebase for login
       firebase
         .auth()
         .signInWithEmailAndPassword(this.state.email, this.state.password)
@@ -77,19 +45,24 @@ class Login extends React.Component {
         });
     }
   };
-  //-----------------------------------------------------|
-  // RENDER ---------------------------------------------|
-  //=====================================================|
+
+  isFormValid = ({ email, password }) => email && password;
+
+  handleInputError = (errors, inputName) => {
+    return errors.some(error => error.message.toLowerCase().includes(inputName))
+      ? "error"
+      : "";
+  };
+
   render() {
-    // destructure state obj
     const { email, password, errors, loading } = this.state;
-    // return JSX
+
     return (
       <Grid textAlign="center" verticalAlign="middle" className="app">
         <Grid.Column style={{ maxWidth: 450 }}>
           <Header as="h1" icon color="violet" textAlign="center">
             <Icon name="code branch" color="violet" />
-            Login to TechChat
+            Login to DevChat
           </Header>
           <Form onSubmit={this.handleSubmit} size="large">
             <Segment stacked>
@@ -101,9 +74,10 @@ class Login extends React.Component {
                 placeholder="Email Address"
                 onChange={this.handleChange}
                 value={email}
-                className={this.handleInputError(errors, 'email')}
+                className={this.handleInputError(errors, "email")}
                 type="email"
               />
+
               <Form.Input
                 fluid
                 name="password"
@@ -112,13 +86,13 @@ class Login extends React.Component {
                 placeholder="Password"
                 onChange={this.handleChange}
                 value={password}
-                className={this.handleInputError(errors, 'password')}
+                className={this.handleInputError(errors, "password")}
                 type="password"
               />
 
               <Button
                 disabled={loading}
-                className={loading ? 'loading' : ''}
+                className={loading ? "loading" : ""}
                 color="violet"
                 fluid
                 size="large"
