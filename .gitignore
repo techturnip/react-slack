@@ -56,3 +56,5 @@ Sessionx.vim
 .history/
 
 .env
+
+/src/firebase.js
