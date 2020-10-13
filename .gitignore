@@ -54,3 +54,5 @@ Sessionx.vim
 
 # VS Code
 .history/
+
+.env
