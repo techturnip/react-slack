@@ -116,4 +116,5 @@ class Login extends React.Component {
   }
 }
 
+// export component
 export default Login;
